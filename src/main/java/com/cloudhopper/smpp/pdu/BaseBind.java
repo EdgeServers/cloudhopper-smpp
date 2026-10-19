@@ -124,8 +124,10 @@ public abstract class BaseBind<R extends PduResponse> extends PduRequest<R> {
     public void appendBodyToString(StringBuilder buffer) {
         buffer.append("systemId [");
         buffer.append(StringUtil.toStringWithNullAsEmpty(this.systemId));
+        // The password never reaches a log: a bind is logged by the unbound session before any
+        // per-account logging option applies, so this is the one place that can keep it out.
         buffer.append("] password [");
-        buffer.append(StringUtil.toStringWithNullAsEmpty(this.password));
+        buffer.append(this.password == null || this.password.isEmpty() ? "" : "***");
         buffer.append("] systemType [");
         buffer.append(StringUtil.toStringWithNullAsEmpty(this.systemType));
         buffer.append("] interfaceVersion [0x");
